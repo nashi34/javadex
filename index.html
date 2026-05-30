@@ -1,0 +1,1855 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaDex - Guia de Estudo de Java</title>
+<style>
+:root {
+  --bg: #f6f7f8;
+  --panel: #ffffff;
+  --panel-2: #fbfbfc;
+  --ink: #17191c;
+  --muted: #667085;
+  --soft: #e5e7eb;
+  --soft-2: #f1f3f5;
+  --brand: #c2410c;
+  --brand-2: #1d4ed8;
+  --good: #15803d;
+  --bad: #b91c1c;
+  --warn: #a16207;
+  --code: #111827;
+  --code-2: #0b1220;
+  --topbar: rgba(255,255,255,.96);
+  --nav-ink: #374151;
+  --active-bg: #fff7ed;
+  --hero-bg: linear-gradient(180deg, #fff, #fbfbfc);
+  --tile-bg: #fff;
+  --text-block: #28313f;
+  --tag-ink: #475467;
+  --meter-bg: #e5e7eb;
+  --inline-code-bg: #eef2f7;
+  --inline-code-ink: #0f3a73;
+  --blue-soft: #eff6ff;
+  --blue-ink: #1e3a8a;
+  --blue-border: #bfdbfe;
+  --warn-soft: #fffbeb;
+  --warn-ink: #713f12;
+  --warn-border: #fde68a;
+  --good-soft: #f0fdf4;
+  --good-ink: #14532d;
+  --good-border: #bbf7d0;
+  --bad-soft: #fef2f2;
+  --bad-border: #fecaca;
+  --shadow: 0 12px 28px rgba(15, 23, 42, .08);
+  --radius: 8px;
+  --mono: "Cascadia Code", "Consolas", "SFMono-Regular", monospace;
+  --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --side: 292px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #101418;
+  --panel: #171d23;
+  --panel-2: #1d242c;
+  --ink: #eef2f6;
+  --muted: #a7b0bd;
+  --soft: #2b3440;
+  --soft-2: #242c35;
+  --brand: #f97316;
+  --brand-2: #60a5fa;
+  --good: #4ade80;
+  --bad: #f87171;
+  --warn: #facc15;
+  --code: #0b1117;
+  --code-2: #070b10;
+  --topbar: rgba(23,29,35,.96);
+  --nav-ink: #d9e0ea;
+  --active-bg: #321f14;
+  --hero-bg: linear-gradient(180deg, #1b222a, #171d23);
+  --tile-bg: #171d23;
+  --text-block: #dce3eb;
+  --tag-ink: #c7d0dc;
+  --meter-bg: #313b47;
+  --inline-code-bg: #263241;
+  --inline-code-ink: #bfdbfe;
+  --blue-soft: #17283f;
+  --blue-ink: #bfdbfe;
+  --blue-border: #31517a;
+  --warn-soft: #332a13;
+  --warn-ink: #fde68a;
+  --warn-border: #70551b;
+  --good-soft: #12301f;
+  --good-ink: #bbf7d0;
+  --good-border: #2f6846;
+  --bad-soft: #35191d;
+  --bad-border: #7f2a32;
+  --shadow: 0 16px 34px rgba(0, 0, 0, .32);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.55;
+}
+
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+input, textarea, select { background: var(--panel); color: var(--ink); }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: 58px;
+  border-bottom: 1px solid var(--soft);
+  background: var(--topbar);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+.menu-btn {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--soft);
+  background: var(--panel);
+  border-radius: 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 190px;
+}
+
+.brand-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--brand);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.brand strong { display: block; line-height: 1.05; }
+.brand span { color: var(--muted); font-size: .77rem; }
+
+.top-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-chip {
+  border: 1px solid var(--soft);
+  background: var(--panel);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: .82rem;
+  white-space: nowrap;
+}
+
+.search {
+  width: min(360px, 36vw);
+  border: 1px solid var(--soft);
+  background: var(--panel);
+  border-radius: 8px;
+  padding: 9px 12px;
+  outline: none;
+}
+.search::placeholder, textarea::placeholder { color: var(--muted); }
+.search:focus { border-color: var(--brand-2); box-shadow: 0 0 0 3px rgba(29,78,216,.12); }
+
+.shell { display: flex; min-height: calc(100vh - 58px); }
+
+.sidebar {
+  width: var(--side);
+  flex: 0 0 var(--side);
+  border-right: 1px solid var(--soft);
+  background: var(--panel);
+  padding: 16px 12px 24px;
+  position: sticky;
+  top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto;
+}
+
+.side-title {
+  padding: 8px 10px;
+  font-size: .74rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.nav-item {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  color: var(--nav-ink);
+  padding: 9px 10px;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-item:hover { background: var(--soft-2); }
+.nav-item.active { background: var(--active-bg); color: var(--brand); font-weight: 800; }
+.nav-item.done::after { content: "feito"; color: var(--good); font-size: .72rem; font-weight: 800; }
+.nav-item small { color: var(--muted); font-family: var(--mono); }
+
+.content {
+  width: 100%;
+  padding: 28px;
+}
+
+.study-grid {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 22px;
+  align-items: start;
+}
+
+.main-panel, .study-card, .lesson-card, .quiz-card, .exercise-card {
+  background: var(--panel);
+  border: 1px solid var(--soft);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(15,23,42,.04);
+}
+
+.main-panel { overflow: hidden; }
+
+.hero {
+  padding: 26px 28px;
+  border-bottom: 1px solid var(--soft);
+  background: var(--hero-bg);
+}
+
+.kicker {
+  color: var(--brand);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .72rem;
+  margin-bottom: 8px;
+}
+
+h1, h2, h3 { line-height: 1.18; margin: 0; letter-spacing: 0; }
+h1 { font-size: clamp(1.75rem, 2.8vw, 2.5rem); }
+h2 { font-size: 1.35rem; margin-bottom: 12px; }
+h3 { font-size: 1.05rem; margin-bottom: 8px; }
+p { margin: 0 0 12px; }
+
+.hero p {
+  color: var(--muted);
+  max-width: 780px;
+  margin-top: 10px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  border: 1px solid var(--soft);
+  background: var(--panel);
+  color: var(--ink);
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.btn:hover { border-color: var(--brand-2); color: var(--brand-2); }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+.btn.good { background: var(--good); border-color: var(--good); color: #fff; }
+.btn.ghost { background: transparent; }
+
+.section { padding: 24px 28px; border-bottom: 1px solid var(--soft); }
+.section:last-child { border-bottom: 0; }
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.module-card {
+  border: 1px solid var(--soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 15px;
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.module-card strong { font-size: .95rem; }
+.module-card span { color: var(--muted); font-size: .84rem; }
+.meter { height: 6px; background: var(--meter-bg); border-radius: 999px; overflow: hidden; margin-top: auto; }
+.meter > i { display: block; height: 100%; background: var(--good); width: 0; }
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.phase-card {
+  border: 1px solid var(--soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 14px;
+}
+.phase-card small {
+  display: block;
+  color: var(--brand);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 7px;
+}
+.phase-card strong { display: block; margin-bottom: 6px; }
+.phase-card p { color: var(--muted); font-size: .88rem; margin: 0; }
+
+.lesson-card { padding: 24px 28px; }
+.lesson-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.tag {
+  border: 1px solid var(--soft);
+  background: var(--soft-2);
+  color: var(--tag-ink);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: .74rem;
+  font-weight: 800;
+}
+.tag.exam { background: var(--blue-soft); color: var(--brand-2); border-color: var(--blue-border); }
+.tag.warn { background: var(--warn-soft); color: var(--warn); border-color: var(--warn-border); }
+.tag.good { background: var(--good-soft); color: var(--good); border-color: var(--good-border); }
+
+.lesson-body {
+  display: grid;
+  gap: 14px;
+}
+
+.lesson-intro {
+  border: 1px solid var(--soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 16px;
+}
+.lesson-intro strong { display: block; margin-bottom: 8px; }
+.lesson-map {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lesson-map li {
+  border: 1px solid var(--soft);
+  background: var(--tile-bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--text-block);
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+.lesson-section {
+  border: 1px solid var(--soft);
+  border-radius: 8px;
+  background: var(--tile-bg);
+  overflow: hidden;
+}
+.lesson-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--soft);
+  background: var(--panel-2);
+}
+.lesson-section-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--blue-soft);
+  color: var(--brand-2);
+  font-weight: 900;
+  font-size: .82rem;
+}
+.lesson-section-title { font-weight: 900; }
+.lesson-section-desc {
+  color: var(--muted);
+  font-size: .84rem;
+}
+.lesson-section-body { padding: 16px; }
+.lesson-section-body > :last-child { margin-bottom: 0; }
+
+.text-block {
+  color: var(--text-block);
+  font-size: .98rem;
+}
+.text-block ul, .text-block ol { margin: 10px 0 0 22px; padding: 0; }
+.text-block li { margin: 6px 0; }
+
+.callout {
+  border: 1px solid var(--blue-border);
+  background: var(--blue-soft);
+  color: var(--blue-ink);
+  border-radius: 8px;
+  padding: 13px 14px;
+}
+.callout.warn { border-color: var(--warn-border); background: var(--warn-soft); color: var(--warn-ink); }
+.callout.good { border-color: var(--good-border); background: var(--good-soft); color: var(--good-ink); }
+
+code {
+  font-family: var(--mono);
+  background: var(--inline-code-bg);
+  color: var(--inline-code-ink);
+  border-radius: 5px;
+  padding: 1px 5px;
+  font-size: .88em;
+}
+
+.codebox {
+  background: var(--code);
+  color: #dbeafe;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #263244;
+}
+.code-head {
+  background: var(--code-2);
+  color: #93a4b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: .76rem;
+}
+.code-head button {
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  background: transparent;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: .88rem;
+  line-height: 1.6;
+  tab-size: 4;
+}
+
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 1px solid var(--soft);
+  border-radius: 8px;
+  font-size: .9rem;
+}
+.compare th, .compare td { padding: 10px 12px; border-bottom: 1px solid var(--soft); text-align: left; vertical-align: top; }
+.compare th { background: var(--soft-2); }
+.compare tr:last-child td { border-bottom: 0; }
+
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.quiz-card, .exercise-card { padding: 18px; }
+.lesson-section .quiz-card,
+.lesson-section .exercise-card {
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+  background: transparent;
+}
+.quiz-options { display: grid; gap: 8px; margin-top: 12px; }
+.option {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.option.correct { border-color: var(--good-border); background: var(--good-soft); color: var(--good); }
+.option.wrong { border-color: var(--bad-border); background: var(--bad-soft); color: var(--bad); }
+.feedback { margin-top: 10px; color: var(--muted); font-size: .92rem; }
+
+.exercise-card textarea, .notes textarea {
+  width: 100%;
+  min-height: 160px;
+  border: 1px solid var(--soft);
+  border-radius: 8px;
+  padding: 12px;
+  resize: vertical;
+  font-family: var(--mono);
+  outline: none;
+}
+.exercise-card textarea:focus, .notes textarea:focus { border-color: var(--brand-2); box-shadow: 0 0 0 3px rgba(29,78,216,.12); }
+.exercise-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.result { margin-top: 10px; padding: 10px 12px; border-radius: 8px; display: none; }
+.result.show { display: block; }
+.result.hint { background: var(--blue-soft); color: var(--blue-ink); border: 1px solid var(--blue-border); }
+.result.ok { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-border); }
+.result.no { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad-border); }
+
+.right-col { display: grid; gap: 14px; position: sticky; top: 78px; }
+.study-card { padding: 16px; }
+.study-card h3 { margin-bottom: 10px; }
+.compact-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.compact-list li {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  color: var(--nav-ink);
+  font-size: .9rem;
+}
+.compact-list input { margin-top: 3px; }
+
+.flashcard {
+  border: 1px solid var(--soft);
+  background: var(--panel-2);
+  border-radius: 8px;
+  padding: 14px;
+  min-height: 145px;
+}
+.flashcard strong { display: block; margin-bottom: 8px; }
+.flash-answer { display: none; color: var(--text-block); }
+.flashcard.reveal .flash-answer { display: block; }
+
+.hidden { display: none !important; }
+.empty { color: var(--muted); padding: 18px; border: 1px dashed var(--soft); border-radius: 8px; }
+
+@media (max-width: 1040px) {
+  .study-grid { grid-template-columns: 1fr; }
+  .right-col { position: static; }
+  .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .phase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .menu-btn { display: block; }
+  .search { display: none; }
+  .sidebar {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    transform: translateX(-105%);
+    z-index: 30;
+    box-shadow: var(--shadow);
+    transition: transform .18s ease;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .content { padding: 16px; }
+  .hero, .section, .lesson-card { padding: 20px; }
+  .module-grid { grid-template-columns: 1fr; }
+  .phase-grid, .lesson-map { grid-template-columns: 1fr; }
+  .top-actions { gap: 6px; }
+  .top-actions .btn { width: auto; padding: 8px 10px; }
+  .progress-chip { display: none; }
+  .lesson-nav { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">&#9776;</button>
+  <div class="brand" role="button" tabindex="0" onclick="showDashboard()">
+    <div class="brand-mark" role="button" tabindex="0" onclick="showDashboard()">JDX</div>
+    <div>
+      <strong>JavaDex</strong>
+      <span>guia para passar à cadeira</span>
+    </div>
+  </div>
+  <input class="search" id="search" placeholder="Pesquisar: herança, arrays, exceções..." autocomplete="off">
+  <div class="top-actions">
+    <span class="progress-chip" id="progressChip">0% concluído</span>
+    <button class="btn ghost" id="themeBtn" type="button" onclick="toggleTheme()">Modo escuro</button>
+    <button class="btn ghost" onclick="resetProgress()">Limpar progresso</button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="content">
+    <div class="study-grid">
+      <div class="main-panel" id="main"></div>
+      <aside class="right-col">
+        <section class="study-card">
+          <h3>Checklist de exame</h3>
+          <ul class="compact-list" id="examChecklist"></ul>
+        </section>
+        <section class="study-card">
+          <h3>Flashcard rápido</h3>
+          <div class="flashcard" id="flashcard"></div>
+          <div class="exercise-actions">
+            <button class="btn" onclick="revealFlash()">Ver resposta</button>
+            <button class="btn" onclick="nextFlash()">Outro</button>
+          </div>
+        </section>
+        <section class="study-card notes">
+          <h3>As minhas notas</h3>
+          <textarea id="notes" placeholder="Aponta dúvidas, erros que repetes e mini-resumos..."></textarea>
+        </section>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script>
+const savedTheme = localStorage.getItem("javadex-theme") || "light";
+document.documentElement.dataset.theme = savedTheme;
+
+const lessons = [
+  {
+    id: "plano",
+    module: "Começar bem",
+    title: "Como estudar Java para passar",
+    level: "base",
+    minutes: 12,
+    exam: true,
+    summary: "Método de estudo, ambiente, compilação e o que normalmente sai numa cadeira de Java.",
+    body: [
+      {type:"text", html: `
+        <p>Para estudar Java bem, usa sempre este ciclo: <strong>ler a ideia</strong>, <strong>ver um exemplo pequeno</strong>, <strong>alterar o exemplo</strong> e <strong>resolver um exercício sem olhar</strong>. Java aprende-se a escrever, não só a ler.</p>
+        <ul>
+          <li><strong>Compilar:</strong> <code>javac Main.java</code> transforma código fonte em bytecode.</li>
+          <li><strong>Executar:</strong> <code>java Main</code> corre a classé que tem <code>public static void main(String[] args)</code>.</li>
+          <li><strong>IDE:</strong> usa IntelliJ, Eclipse ou VS Code, mas percebe os comandos básicos.</li>
+          <li><strong>Prioridade para exame:</strong> tipos, controlo de fluxo, arrays, strings, classes, herança, interfaces, exceções, collections e generics.</li>
+        </ul>`},
+      {type:"callout", tone:"good", html:"Plano prático: 60% do tempo a programar, 25% a rever teoria, 15% a fazer testes curtos. Sempre que errares, escreve a regra no bloco de notas."},
+      {type:"code", title:"Main.java", code:`public class Main {
+    public static void main(String[] args) {
+        System.out.println("Olá, Java!");
+    }
+}`},
+      {type:"table", rows:[
+        ["JDK", "Kit para desenvolver: compilador, runtime e ferramentas."],
+        ["JRE", "Ambiente para executar programas Java. Hoje vem normalmente dentro do JDK."],
+        ["JVM", "Máquina virtual que executa bytecode."],
+        ["Bytecode", "Código intermédio .class, portável entre sistemas com JVM."],
+        ["Classe pública", "Se a classe é public, o ficheiro tem de ter o mesmo nome."]
+      ]},
+      {type:"exercise", id:"ex-plano", prompt:"Escreve uma classe chamada Main que imprime o teu nome e o nome da cadeira.", starter:`public class Main {
+    public static void main(String[] args) {
+        // escreve aqui
+    }
+}`, checks:[
+        {re:"public\\s+class\\s+Main", msg:"A classe deve chamar-se Main."},
+        {re:"public\\s+static\\s+void\\s+main\\s*\\(", msg:"Falta o método main."},
+        {re:"System\\.out\\.println", msg:"Usa System.out.println para imprimir."}
+      ], hint:"Dentro do main escreve System.out.println(\"...\");"}
+    ],
+    quiz: {
+      q: "Porque é que Java é considerado portável?",
+      options: ["Porque o bytecode corre numa JVM em vários sistemas.", "Porque não precisa de compilação.", "Porque só funciona em browsers.", "Porque todos os ficheiros Java são iguais."],
+      answer: 0,
+      explain: "O código Java é compilado para bytecode, e a JVM interpreta/executa esse bytecode no sistema onde estiver instalada."
+    }
+  },
+  {
+    id: "sintaxe",
+    module: "Fundamentos",
+    title: "Sintaxe, variáveis e tipos",
+    level: "base",
+    minutes: 20,
+    exam: true,
+    summary: "Regras de escrita, tipos primitivos, String, conversões e operadores.",
+    body: [
+      {type:"text", html:`
+        <p>Java é <strong>fortemente tipado</strong>: cada variável tem um tipo definido. Também é sensível a maiúsculas: <code>idade</code> e <code>Idade</code> são nomes diferentes.</p>
+        <ul>
+          <li>Primitivos inteiros: <code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>.</li>
+          <li>Primitivos decimais: <code>float</code>, <code>double</code>.</li>
+          <li>Outros: <code>boolean</code> e <code>char</code>.</li>
+          <li><code>String</code> não é primitivo: é uma classe.</li>
+          <li>Constantes usam <code>final</code>: <code>final double IVA = 0.23;</code>.</li>
+        </ul>`},
+      {type:"code", title:"Tipos e operadores", code:`int idade = 20;
+double media = 14.75;
+boolean aprovado = media >= 9.5;
+char escalao = 'A';
+String nome = "Rita";
+
+int resto = 17 % 5;       // 2
+int inteiro = 5 / 2;      // 2
+double real = 5 / 2.0;    // 2.5
+
+System.out.println(nome + " aprovado? " + aprovado);`},
+      {type:"callout", tone:"warn", html:"Armadilha comum: <code>5 / 2</code> da <code>2</code>, porque ambos são inteiros. Usa <code>5 / 2.0</code> ou converte para <code>double</code>."},
+      {type:"table", rows:[
+        ["=", "atribuição"],
+        ["==", "comparação de valores primitivos ou referências"],
+        ["&&", "É lógico, só é true se ambos forem true"],
+        ["||", "OU lógico, basta um ser true"],
+        ["!", "negação"],
+        ["++ / --", "incremento / decremento"]
+      ]},
+      {type:"exercise", id:"ex-sintaxe", prompt:"Cria variáveis para nome, nota1, nota2, calcula a média e imprime se está aprovado com média >= 9.5.", starter:`public class Main {
+    public static void main(String[] args) {
+        String nome = "";
+        double nota1 = 0;
+        double nota2 = 0;
+
+    }
+}`, checks:[
+        {re:"String\\s+nome", msg:"Cria uma String chamada nome."},
+        {re:"double\\s+nota1", msg:"Cria nota1 como double."},
+        {re:"double\\s+nota2", msg:"Cria nota2 como double."},
+        {re:"media\\s*=\\s*\\(?\\s*nota1\\s*\\+\\s*nota2", msg:"Calcula a média a partir das duas notas."},
+        {re:">=\\s*9\\.5", msg:"Compara a média com 9.5."}
+      ], hint:"A média pode ser: double media = (nota1 + nota2) / 2;"}
+    ],
+    quiz: {
+      q: "Qual é o resultado de 7 / 2 em Java, se ambos forem int?",
+      options: ["3", "3.5", "4", "Erro de compilação"],
+      answer: 0,
+      explain: "Divisão entre inteiros descarta a parte decimal."
+    }
+  },
+  {
+    id: "controlo",
+    module: "Fundamentos",
+    title: "If, switch e ciclos",
+    level: "base",
+    minutes: 28,
+    exam: true,
+    summary: "Decisões, repetição, break, continue e escolhas de ciclo.",
+    body: [
+      {type:"text", html:`
+        <p>Controlo de fluxo decide <strong>o que executa</strong> e <strong>quantas vezes executa</strong>. Em exame, tens quase sempre de simular ciclos ou escrever uma função com condições.</p>
+        <ul>
+          <li><code>if/else</code>: decisao geral.</li>
+          <li><code>switch</code>: várias alternativas baseadas num valor.</li>
+          <li><code>for</code>: quando sabes quantas repetições queres.</li>
+          <li><code>while</code>: enquanto uma condição for verdadeira.</li>
+          <li><code>do while</code>: executa pelo menos uma vez.</li>
+        </ul>`},
+      {type:"code", title:"Contar positivos num array", code:`int[] valores = {4, -2, 7, 0, -1};
+int positivos = 0;
+
+for (int i = 0; i < valores.length; i++) {
+    if (valores[i] > 0) {
+        positivos++;
+    }
+}
+
+System.out.println("Positivos: " + positivos);`},
+      {type:"code", title:"Switch moderno", code:`String dia = "SEG";
+
+String tipo = switch (dia) {
+    case "SAB", "DOM" -> "fim de semana";
+    case "SEG", "TER", "QUA", "QUI", "SEX" -> "dia útil";
+    default -> "dia invalido";
+};`},
+      {type:"callout", tone:"warn", html:"Em ciclos, confirma sempre: inicialização, condição de paragem, atualização e índices válidos. Muitos erros são <code>i <= array.length</code>, que estoura no último acesso."},
+      {type:"exercise", id:"ex-controlo", prompt:"Escreve um ciclo que soma todos os números pares de 1 a 100.", starter:`public class Main {
+    public static void main(String[] args) {
+        int soma = 0;
+
+        // ciclo aqui
+
+        System.out.println(soma);
+    }
+}`, checks:[
+        {re:"for\\s*\\(", msg:"Usa um ciclo for."},
+        {re:"%\\s*2\\s*==\\s*0", msg:"Testa se o número é par com % 2 == 0."},
+        {re:"soma\\s*(=|\\+=)", msg:"Atualiza a soma."}
+      ], hint:"Percorre i de 1 a 100. Se i % 2 == 0, faz soma += i."}
+    ],
+    quiz: {
+      q: "Qual ciclo executa o bloco pelo menos uma vez?",
+      options: ["do while", "while", "for", "foreach"],
+      answer: 0,
+      explain: "No do while a condição é verificada depois da primeira execução."
+    }
+  },
+  {
+    id: "metodos",
+    module: "Fundamentos",
+    title: "Métodos, parâmetros e return",
+    level: "base",
+    minutes: 24,
+    exam: true,
+    summary: "Como dividir problemas em funções, devolver valores e evitar repetição.",
+    body: [
+      {type:"text", html:`
+        <p>Um método deve fazer uma tarefa clara. Em Java, a assinatura inclui nome, parâmetros e tipo de retorno. Se não devolve nada, usa <code>void</code>.</p>
+        <ul>
+          <li><code>static</code> permite chamar o método sem criar objeto da classe.</li>
+          <li><code>return</code> termina o método e devolve um valor.</li>
+          <li>Parâmetros recebem cópias dos valores. Para objetos, a referência é copiada.</li>
+          <li>Sobrecarga: mesmo nome, parâmetros diferentes.</li>
+        </ul>`},
+      {type:"code", title:"Métodos pequenos", code:`public class Calculadora {
+    static double media(double a, double b) {
+        return (a + b) / 2;
+    }
+
+    static boolean aprovado(double media) {
+        return media >= 9.5;
+    }
+
+    public static void main(String[] args) {
+        double m = media(12, 15);
+        System.out.println(aprovado(m));
+    }
+}`},
+      {type:"callout", tone:"good", html:"Regra útil: se tens código repetido ou um bloco que da para nomear com um verbo, provavelmente merece um método."},
+      {type:"exercise", id:"ex-metodos", prompt:"Cria um método static chamado maior que recebe dois int e devolve o maior.", starter:`public class Main {
+    static int maior(int a, int b) {
+        // completa
+    }
+
+    public static void main(String[] args) {
+        System.out.println(maior(5, 9));
+    }
+}`, checks:[
+        {re:"static\\s+int\\s+maior\\s*\\(\\s*int\\s+a\\s*,\\s*int\\s+b\\s*\\)", msg:"A assinatura deve ser static int maior(int a, int b)."},
+        {re:"return", msg:"O método deve devolver com return."},
+        {re:"if|Math\\.max|\\?", msg:"Precisas de escolher entre a e b."}
+      ], hint:"Podes usar if (a > b) return a; else return b;"}
+    ],
+    quiz: {
+      q: "O que significa void num método?",
+      options: ["Não devolve valor.", "Devolve null.", "É privado.", "É um método de classe."],
+      answer: 0,
+      explain: "void indica que o método executa a sua ação mas não retorna um valor."
+    }
+  },
+  {
+    id: "arrays-strings",
+    module: "Dados",
+    title: "Arrays e Strings",
+    level: "base",
+    minutes: 34,
+    exam: true,
+    summary: "Índices, length, foreach, String imutável, equals e StringBuilder.",
+    body: [
+      {type:"text", html:`
+        <p>Arrays guardam vários valores do mesmo tipo. Os índices começam em <code>0</code> e o último índice é <code>length - 1</code>. Strings são objetos imutáveis: ao "alterar" uma String, crias outra.</p>
+        <ul>
+          <li>Array: <code>int[] nums = {1, 2, 3};</code></li>
+          <li>Tamanho do array: <code>nums.length</code>, sem parenteses.</li>
+          <li>Tamanho da String: <code>texto.length()</code>, com parenteses.</li>
+          <li>Comparar texto: <code>a.equals(b)</code>, não <code>a == b</code>.</li>
+          <li>Concatenação em ciclos: prefere <code>StringBuilder</code>.</li>
+        </ul>`},
+      {type:"code", title:"Arrays e Strings", code:`String frase = "Java é fixe";
+System.out.println(frase.length());
+System.out.println(frase.substring(0, 4)); // Java
+System.out.println(frase.toUpperCase());
+
+int[] notas = {12, 15, 9, 18};
+int soma = 0;
+
+for (int nota : notas) {
+    soma += nota;
+}
+
+double media = (double) soma / notas.length;`},
+      {type:"table", rows:[
+        ["== em String", "Compara se é a mesma referência em memória."],
+        [".equals", "Compara o conteúdo textual."],
+        ["length", "Campo dos arrays."],
+        ["length()", "Método de String."],
+        ["StringBuilder", "Eficiente para construir texto repetidamente."]
+      ]},
+      {type:"exercise", id:"ex-arrays", prompt:"Cria um método que recebe um array de int e devolve o maior valor.", starter:`public class Main {
+    static int maior(int[] valores) {
+        int maior = valores[0];
+
+        // percorre o array
+
+        return maior;
+    }
+}`, checks:[
+        {re:"static\\s+int\\s+maior\\s*\\(\\s*int\\[\\]\\s+valores\\s*\\)", msg:"Cria o método maior(int[] valores)."},
+        {re:"valores\\[0\\]", msg:"Inicializa com o primeiro elemento."},
+        {re:"for\\s*\\(", msg:"Percorre o array com for ou foreach."},
+        {re:"if\\s*\\(", msg:"Compara para atualizar o maior."},
+        {re:"return\\s+maior", msg:"Devolve a variável maior."}
+      ], hint:"Comeca em valores[0]. Para cada valor, se valor > maior, atualiza maior."}
+    ],
+    quiz: {
+      q: "Qual é a forma correta de comparar duas Strings pelo conteúdo?",
+      options: ["a.equals(b)", "a == b", "a = b", "equals(a, b)"],
+      answer: 0,
+      explain: "equals compara o conteúdo; == compara referências."
+    }
+  },
+  {
+    id: "poo",
+    module: "POO",
+    title: "Classes, objetos e encapsulamento",
+    level: "médio",
+    minutes: 36,
+    exam: true,
+    summary: "A base de programação orientada a objetos: estado, comportamento, construtores e getters/setters.",
+    body: [
+      {type:"text", html:`
+        <p>Uma classe é um molde. Um objeto e uma instância desse molde. Em Java, POO organiza código em entidades com <strong>estado</strong> (atributos) e <strong>comportamento</strong> (métodos).</p>
+        <ul>
+          <li>Atributos devem normalmente ser <code>private</code>.</li>
+          <li>Construtor inicializa o objeto.</li>
+          <li>Getters e setters controlam acesso e validação.</li>
+          <li><code>this</code> refere-se ao objeto atual.</li>
+          <li><code>toString()</code> dá uma representação textual útil.</li>
+        </ul>`},
+      {type:"code", title:"Classe simples", code:`public class Aluno {
+    private String nome;
+    private double media;
+
+    public Aluno(String nome, double media) {
+        this.nome = nome;
+        setMedia(media);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getMedia() {
+        return media;
+    }
+
+    public void setMedia(double media) {
+        if (media < 0 || media > 20) {
+            throw new IllegalArgumentException("Média inválida");
+        }
+        this.media = media;
+    }
+
+    public boolean isAprovado() {
+        return media >= 9.5;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (" + media + ")";
+    }
+}`},
+      {type:"callout", tone:"good", html:"Encapsulamento não é só por bonito: protege invariantes. Exemplo: uma nota nunca deve ficar abaixo de 0 nem acima de 20."},
+      {type:"exercise", id:"ex-poo", prompt:"Cria uma classe ContaBancaria com saldo privado, construtor, getSaldo e depositar(double valor) que só aceita valores positivos.", starter:`public class ContaBancaria {
+    private double saldo;
+
+    public ContaBancaria(double saldoInicial) {
+
+    }
+
+    public double getSaldo() {
+
+    }
+
+    public void depositar(double valor) {
+
+    }
+}`, checks:[
+        {re:"private\\s+double\\s+saldo", msg:"O saldo deve ser privado."},
+        {re:"ContaBancaria\\s*\\(\\s*double\\s+saldoInicial\\s*\\)", msg:"Cria o construtor."},
+        {re:"double\\s+getSaldo\\s*\\(", msg:"Cria getSaldo."},
+        {re:"void\\s+depositar\\s*\\(\\s*double\\s+valor\\s*\\)", msg:"Cria depositar(double valor)."},
+        {re:"valor\\s*>\\s*0|valor\\s*<=\\s*0", msg:"Valida se o valor é positivo."}
+      ], hint:"No depositar: if (valor > 0) saldo += valor;"}
+    ],
+    quiz: {
+      q: "Porque se usam atributos private?",
+      options: ["Para controlar acesso e proteger o estado do objeto.", "Para ficarem mais rápidos.", "Para não ocuparem memória.", "Para só existirem em static."],
+      answer: 0,
+      explain: "Atributos private permitem validar alterações através de métodos públicos."
+    }
+  },
+  {
+    id: "heranca",
+    module: "POO",
+    title: "Herança, polimorfismo e interfaces",
+    level: "médio",
+    minutes: 42,
+    exam: true,
+    summary: "extends, implements, override, classes abstratas e desenho orientado a objetos.",
+    body: [
+      {type:"text", html:`
+        <p>Herança permite especializar uma classe. Polimorfismo permite tratar objetos diferentes através de um tipo comum. Interfaces definem contratos.</p>
+        <ul>
+          <li><code>extends</code>: uma classe herda de outra.</li>
+          <li><code>implements</code>: uma classe cumpre uma interface.</li>
+          <li><code>@Override</code>: indica que estas a redefinir um método.</li>
+          <li><code>super</code>: chama construtor/método da superclasse.</li>
+          <li>Java só permite herdar de uma classe, mas várias interfaces.</li>
+        </ul>`},
+      {type:"code", title:"Polimorfismo", code:`abstract class Forma {
+    abstract double area();
+}
+
+class Retangulo extends Forma {
+    private double largura;
+    private double altura;
+
+    Retangulo(double largura, double altura) {
+        this.largura = largura;
+        this.altura = altura;
+    }
+
+    @Override
+    double area() {
+        return largura * altura;
+    }
+}
+
+interface Desenhavel {
+    void desenhar();
+}
+
+Forma f = new Retangulo(4, 3);
+System.out.println(f.area()); // 12.0`},
+      {type:"table", rows:[
+        ["Classe abstrata", "Pode ter estado, construtores e métodos abstratos/concretos."],
+        ["Interface", "Contrato de comportamento; ideal para capacidades."],
+        ["Override", "Mesma assinatura, comportamento especializado."],
+        ["Overload", "Mesmo nome, parâmetros diferentes."],
+        ["Polimorfismo", "Variável de tipo geral aponta para objeto específico."]
+      ]},
+      {type:"callout", tone:"warn", html:"Erro comum: confundir overload com override. Overload muda parâmetros. Override redefine método herdado com a mesma assinatura."},
+      {type:"exercise", id:"ex-heranca", prompt:"Cria uma interface Pagavel com o método calcularPagamento(), e uma classe Funcionario que a implementa.", starter:`interface Pagavel {
+
+}
+
+class Funcionario implements Pagavel {
+    private double salario;
+
+    public Funcionario(double salario) {
+        this.salario = salario;
+    }
+
+}`, checks:[
+        {re:"interface\\s+Pagavel", msg:"Cria a interface Pagavel."},
+        {re:"double\\s+calcularPagamento\\s*\\(\\s*\\)", msg:"A interface deve declarar calcularPagamento()."},
+        {re:"class\\s+Funcionario\\s+implements\\s+Pagavel", msg:"Funcionario deve implementar Pagavel."},
+        {re:"@Override", msg:"Usa @Override no método implementado."},
+        {re:"return\\s+salario", msg:"Devolve o salário no pagamento."}
+      ], hint:"Na interface: double calcularPagamento(); Na classe: @Override public double calcularPagamento() { return salario; }"}
+    ],
+    quiz: {
+      q: "Uma classe Java pode implementar quantas interfaces?",
+      options: ["Varias", "Apenas uma", "Nenhuma", "Duas no maximo"],
+      answer: 0,
+      explain: "Java permite herdar de uma classe, mas implementar várias interfaces."
+    }
+  },
+  {
+    id: "exceptions-files",
+    module: "Robustez",
+    title: "Exceções e ficheiros",
+    level: "médio",
+    minutes: 38,
+    exam: true,
+    summary: "try/catch/finally, checked vs unchecked, try-with-resources e leitura de ficheiros.",
+    body: [
+      {type:"text", html:`
+        <p>Exceções representam situações anormais. O objetivo é lidar com erros sem espalhar verificações confusas por todo o código.</p>
+        <ul>
+          <li><code>try</code>: bloco que pode falhar.</li>
+          <li><code>catch</code>: trata um tipo de exceção.</li>
+          <li><code>finally</code>: corre no fim, mesmo com erro.</li>
+          <li><code>throw</code>: lança uma exceção.</li>
+          <li><code>throws</code>: declara que o método pode lançar.</li>
+          <li>Try-with-resources fecha recursos automaticamente.</li>
+        </ul>`},
+      {type:"code", title:"Validação e ficheiros", code:`public static int dividir(int a, int b) {
+    if (b == 0) {
+        throw new IllegalArgumentException("Divisor não pode ser zero");
+    }
+    return a / b;
+}
+
+try {
+    List<String> linhas = Files.readAllLines(Path.of("dados.txt"));
+    for (String linha : linhas) {
+        System.out.println(linha);
+    }
+} catch (IOException e) {
+    System.out.println("Erro ao ler ficheiro: " + e.getMessage());
+}`},
+      {type:"table", rows:[
+        ["Checked exception", "O compilador obriga a tratar ou declarar. Ex: IOException."],
+        ["Unchecked exception", "RuntimeException; o compilador não obriga. Ex: NullPointerException."],
+        ["finally", "Útil para limpeza, embora try-with-resources seja preferível para recursos."],
+        ["throw", "Lançar exceção agora."],
+        ["throws", "Avisar que o método pode lançar."]
+      ]},
+      {type:"exercise", id:"ex-exceptions", prompt:"Cria um método validarIdade(int idade) que lança IllegalArgumentException se idade for negativa.", starter:`public class Main {
+    static void validarIdade(int idade) {
+
+    }
+}`, checks:[
+        {re:"static\\s+void\\s+validarIdade\\s*\\(\\s*int\\s+idade\\s*\\)", msg:"Cria o método validarIdade(int idade)."},
+        {re:"idade\\s*<\\s*0", msg:"Verifica se a idade é negativa."},
+        {re:"throw\\s+new\\s+IllegalArgumentException", msg:"Lanca IllegalArgumentException."}
+      ], hint:"if (idade < 0) throw new IllegalArgumentException(\"Idade invalida\");"}
+    ],
+    quiz: {
+      q: "Qual exceção é checked?",
+      options: ["IOException", "NullPointerException", "ArithmeticException", "IllegalArgumentException"],
+      answer: 0,
+      explain: "IOException é checked; o compilador exige tratamento ou declaração."
+    }
+  },
+  {
+    id: "collections-generics",
+    module: "Dados",
+    title: "Collections e generics",
+    level: "médio",
+    minutes: 45,
+    exam: true,
+    summary: "ArrayList, HashSet, HashMap, iteração, equals/hashCode e tipos genéricos.",
+    body: [
+      {type:"text", html:`
+        <p>Collections são estruturas prontas para guardar grupos de objetos. Generics dao segurança de tipos: <code>List&lt;String&gt;</code> só aceita Strings.</p>
+        <ul>
+          <li><code>List</code>: mantém ordem e aceita repetidos.</li>
+          <li><code>Set</code>: não aceita repetidos.</li>
+          <li><code>Map</code>: pares chave/valor.</li>
+          <li><code>ArrayList</code>: acesso rápido por índice.</li>
+          <li><code>HashMap</code>/<code>HashSet</code>: dependem de <code>equals</code> e <code>hashCode</code>.</li>
+        </ul>`},
+      {type:"code", title:"Collections essenciais", code:`List<String> nomes = new ArrayList<>();
+nomes.add("Ana");
+nomes.add("Rui");
+nomes.remove("Ana");
+
+Set<Integer> números = new HashSet<>();
+números.add(10);
+números.add(10); // repetido, fica só um
+
+Map<String, Integer> notas = new HashMap<>();
+notas.put("Ana", 16);
+notas.put("Rui", 13);
+
+for (Map.Entry<String, Integer> entrada : notas.entrySet()) {
+    System.out.println(entrada.getKey() + ": " + entrada.getValue());
+}`},
+      {type:"table", rows:[
+        ["Array", "Tamanho fixo, tipo unico, muito simples."],
+        ["ArrayList", "Tamanho dinamico, bom para listas."],
+        ["HashSet", "Unicos, sem ordem garantida."],
+        ["HashMap", "Pesquisa por chave."],
+        ["Generics", "Evitam casts e erros de tipo."]
+      ]},
+      {type:"exercise", id:"ex-collections", prompt:"Cria um Map<String, Integer> com nomes e notas, adiciona 2 alunos e imprime os aprovados.", starter:`import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+
+    }
+}`, checks:[
+        {re:"Map\\s*<\\s*String\\s*,\\s*Integer\\s*>", msg:"Usa Map<String, Integer>."},
+        {re:"new\\s+HashMap\\s*<", msg:"Cria um HashMap."},
+        {re:"\\.put\\s*\\(", msg:"Adiciona alunos com put."},
+        {re:"entrySet\\s*\\(", msg:"Percorre com entrySet."},
+        {re:">=\\s*10|>=\\s*9\\.5", msg:"Filtra aprovados por nota."}
+      ], hint:"for (Map.Entry<String, Integer> e : notas.entrySet()) { if (e.getValue() >= 10) ... }"}
+    ],
+    quiz: {
+      q: "Qual collection deve ser escolhida para guardar pares numeroAluno -> nota?",
+      options: ["Map", "Set", "Queue", "StringBuilder"],
+      answer: 0,
+      explain: "Map é a estrutura para associar chaves a valores."
+    }
+  },
+  {
+    id: "lambdas-streams",
+    module: "Java moderno",
+    title: "Lambdas, streams e Optional",
+    level: "avançado",
+    minutes: 40,
+    exam: false,
+    summary: "Programação funcional em Java: filter, map, collect, reduce e Optional.",
+    body: [
+      {type:"text", html:`
+        <p>Lambdas são funções curtas passadas como valor. Streams permitem processar collections em pipeline. Nem todas as cadeiras exigem isto, mas ajuda muito em código moderno.</p>
+        <ul>
+          <li><code>filter</code>: fica só com elementos que cumprem uma condição.</li>
+          <li><code>map</code>: transforma cada elemento.</li>
+          <li><code>sorted</code>: ordena.</li>
+          <li><code>collect</code>/<code>toList</code>: transforma stream em collection.</li>
+          <li><code>Optional</code>: representa valor que pode não existir.</li>
+        </ul>`},
+      {type:"code", title:"Stream pipeline", code:`record Aluno(String nome, double media) {}
+
+List<Aluno> alunos = List.of(
+    new Aluno("Ana", 16),
+    new Aluno("Rui", 8),
+    new Aluno("Mia", 14)
+);
+
+List<String> aprovados = alunos.stream()
+    .filter(a -> a.media() >= 9.5)
+    .map(Aluno::nome)
+    .sorted()
+    .toList();
+
+Optional<Aluno> melhor = alunos.stream()
+    .max(Comparator.comparingDouble(Aluno::media));`},
+      {type:"callout", tone:"warn", html:"Streams são bons para transformações. Para logica com muitos passos, efeitos laterais ou debug dificil, um ciclo normal pode ser mais claro."},
+      {type:"exercise", id:"ex-streams", prompt:"Dada uma List<Integer>, usa stream para obter apenas os pares ao quadrado.", starter:`import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        List<Integer> nums = List.of(1, 2, 3, 4, 5, 6);
+
+    }
+}`, checks:[
+        {re:"\\.stream\\s*\\(", msg:"Usa stream()."},
+        {re:"\\.filter\\s*\\(", msg:"Usa filter para pares."},
+        {re:"%\\s*2\\s*==\\s*0", msg:"Testa números pares."},
+        {re:"\\.map\\s*\\(", msg:"Usa map para elevar ao quadrado."},
+        {re:"\\.toList\\s*\\(|Collectors\\.toList", msg:"Recolhe para lista."}
+      ], hint:"nums.stream().filter(n -> n % 2 == 0).map(n -> n * n).toList();"}
+    ],
+    quiz: {
+      q: "O que faz map numa stream?",
+      options: ["Transforma cada elemento.", "Remove elementos repetidos.", "Fecha a stream.", "Ordena a lista original."],
+      answer: 0,
+      explain: "map aplica uma função a cada elemento e produz uma stream transformada."
+    }
+  },
+  {
+    id: "testes-debug",
+    module: "Qualidade",
+    title: "Debug, testes e leitura de erros",
+    level: "médio",
+    minutes: 32,
+    exam: false,
+    summary: "Como encontrar bugs, ler stack traces, testar métodos e ganhar confiança.",
+    body: [
+      {type:"text", html:`
+        <p>Uma parte enorme de passar a Java é saber perceber porque o código falhou. Lembra-te: a primeira linha importante do erro costuma dizer o tipo de exceção; as linhas seguintes dizem onde aconteceu.</p>
+        <ul>
+          <li>Usa breakpoints para ver valores em tempo real.</li>
+          <li>Testa métodos pequenos isoladamente.</li>
+          <li>Escreve casos normais, limites e casos inválidos.</li>
+          <li>Para cada bug, pergunta: valor errado, condição errada, índice errado ou objeto null?</li>
+        </ul>`},
+      {type:"code", title:"Teste JUnit 5", code:`import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+class CalculadoraTest {
+    @Test
+    void somaDoisNumeros() {
+        assertEquals(7, Calculadora.soma(3, 4));
+    }
+
+    @Test
+    void divisaoPorZeroLancaErro() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Calculadora.dividir(10, 0);
+        });
+    }
+}`},
+      {type:"table", rows:[
+        ["NullPointerException", "Tentaste usar um objeto que está null."],
+        ["ArrayIndexOutOfBoundsException", "Índice fora do array."],
+        ["ClassCastException", "Cast invalido."],
+        ["NumberFormatException", "Converter texto para número falhou."],
+        ["Stack trace", "Caminho de chamadas ate ao erro."]
+      ]},
+      {type:"exercise", id:"ex-debug", prompt:"Escreve dois testes mentais para um método int soma(int a, int b): um caso normal e um caso com números negativos.", starter:`// Não precisas de compilar aqui. Escreve como comentários.
+// Caso normal:
+// Caso com negativos:
+`, checks:[
+        {re:"soma\\s*\\(", msg:"Menciona chamadas ao método soma."},
+        {re:"-", msg:"Inclui pelo menos um número negativo."},
+        {re:"=", msg:"Indica o resultado esperado."}
+      ], hint:"Exemplo: soma(2, 3) = 5 e soma(-2, 5) = 3."}
+    ],
+    quiz: {
+      q: "O que indica uma NullPointerException?",
+      options: ["Foi usado um objeto que estava null.", "Um array está cheio.", "Falta importar uma classe.", "O compilador não encontrou o main."],
+      answer: 0,
+      explain: "Acontece quando chamas método/acesso num objeto sem instância."
+    }
+  },
+  {
+    id: "exame",
+    module: "Preparação",
+    title: "Treino de exame e padrões de resposta",
+    level: "avançado",
+    minutes: 50,
+    exam: true,
+    summary: "Como atacar exercícios típicos: classes, algoritmos, collections e perguntas teóricas.",
+    body: [
+      {type:"text", html:`
+        <p>Em exame, não comeces logo a escrever tudo. Primeiro identifica entradas, saídas, estados e regras. Depois escreve a solução mais simples correta.</p>
+        <ol>
+          <li><strong>Algoritmos:</strong> inicializa acumuladores, percorre dados, atualiza resultado, devolve.</li>
+          <li><strong>Classes:</strong> atributos private, construtor, getters, métodos de dominio, validação.</li>
+          <li><strong>Herança:</strong> superclasse com comum, subclasses com especialização, override.</li>
+          <li><strong>Collections:</strong> escolhe List/Set/Map pela pergunta, não por habito.</li>
+          <li><strong>Teoria:</strong> define conceito, mostra quando usar, aponta uma armadilha.</li>
+        </ol>`},
+      {type:"callout", tone:"good", html:"Padrão para responder teoria: 'X é ...; usa-se quando ...; em Java escreve-se ...; cuidado com ...'. Isto dá respostas completas sem floreados."},
+      {type:"code", title:"Exercício classico completo", code:`class Produto {
+    private String nome;
+    private double preco;
+
+    public Produto(String nome, double preco) {
+        this.nome = nome;
+        setPreco(preco);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        if (preco < 0) {
+            throw new IllegalArgumentException("Preco invalido");
+        }
+        this.preco = preco;
+    }
+}
+
+class Loja {
+    private List<Produto> produtos = new ArrayList<>();
+
+    public void adicionar(Produto p) {
+        if (p != null) {
+            produtos.add(p);
+        }
+    }
+
+    public Produto maisCaro() {
+        if (produtos.isEmpty()) {
+            return null;
+        }
+
+        Produto melhor = produtos.get(0);
+        for (Produto p : produtos) {
+            if (p.getPreco() > melhor.getPreco()) {
+                melhor = p;
+            }
+        }
+        return melhor;
+    }
+}`},
+      {type:"table", rows:[
+        ["Antes de entregar", "Compila mentalmente: braces, ;, nomes iguais, imports."],
+        ["Arrays", "Nunca uses índice igual ao length."],
+        ["Objetos", "Verifica null quando a pergunta permitir ausencia."],
+        ["Overrides", "Assinatura tem de bater certo."],
+        ["Collections", "Importa java.util.* se necessário."]
+      ]},
+      {type:"exercise", id:"ex-exame", prompt:"Implementa um método contarAprovados(List<Aluno> alunos) que devolve quantos alunos tem média >= 9.5.", starter:`import java.util.*;
+
+class Aluno {
+    private double media;
+
+    public Aluno(double media) {
+        this.media = media;
+    }
+
+    public double getMedia() {
+        return media;
+    }
+}
+
+class Turma {
+    public static int contarAprovados(List<Aluno> alunos) {
+
+    }
+}`, checks:[
+        {re:"int\\s+contarAprovados\\s*\\(\\s*List\\s*<\\s*Aluno\\s*>\\s+alunos\\s*\\)", msg:"A assinatura deve receber List<Aluno> e devolver int."},
+        {re:"int\\s+\\w+\\s*=\\s*0", msg:"Cria um contador inicializado a 0."},
+        {re:"for\\s*\\(", msg:"Percorre a lista."},
+        {re:"getMedia\\s*\\(\\s*\\)\\s*>=\\s*9\\.5", msg:"Verifica média >= 9.5."},
+        {re:"return", msg:"Devolve o contador."}
+      ], hint:"int total = 0; for (Aluno a : alunos) { if (a.getMedia() >= 9.5) total++; } return total;"}
+    ],
+    quiz: {
+      q: "Num exercício de classe em exame, qual é uma boa prática quase sempre esperada?",
+      options: ["Atributos private e construtor.", "Todos os atributos public.", "Tudo static.", "Não usar métodos."],
+      answer: 0,
+      explain: "Encapsulamento com atributos private, construtor e métodos e um padrão esperado em POO."
+    }
+  }
+];
+
+const checklist = [
+  "Sei explicar JDK, JVM, bytecode e método main.",
+  "Domino tipos primitivos, String, operadores e casts.",
+  "Consigo escrever if/switch/for/while sem erros de índices.",
+  "Consigo criar métodos com parâmetros e return.",
+  "Sei percorrer arrays e comparar Strings com equals.",
+  "Sei criar classes com private, construtor, getters e validação.",
+  "Percebo herança, interfaces, override, overload e polimorfismo.",
+  "Consigo tratar exceções e ler uma stack trace simples.",
+  "Sei escolher List, Set ou Map e usar generics.",
+  "Consigo resolver um exercício completo em papel sem IDE."
+];
+
+const flashcards = [
+  ["O que é a JVM?", "A máquina virtual que executa bytecode Java no sistema onde o programa corre."],
+  ["Quando usar equals em vez de ==?", "Para comparar conteúdo de objetos, especialmente Strings."],
+  ["Qual é o último índice de um array?", "array.length - 1."],
+  ["O que faz static?", "Pertence a classe, não a uma instância especifica."],
+  ["Override vs overload?", "Override redefine método herdado com mesma assinatura; overload usa mesmo nome com parâmetros diferentes."],
+  ["List vs Set vs Map?", "List guarda sequencia, Set guarda únicos, Map associa chave a valor."],
+  ["Checked vs unchecked exception?", "Checked exige tratamento/declaração; unchecked deriva de RuntimeException e não obriga no compilador."],
+  ["O que é encapsulamento?", "Esconder estado interno e expor operações controladas por métodos."]
+];
+
+let state = JSON.parse(localStorage.getItem("javadex-state") || "{}");
+state.done = state.done || [];
+state.checks = state.checks || {};
+state.current = state.current || lessons[0].id;
+let flashIndex = Number(localStorage.getItem("javadex-flash") || "0");
+
+function save() {
+  localStorage.setItem("javadex-state", JSON.stringify(state));
+  updateProgress();
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function renderSidebar(filter = "") {
+  const sidebar = document.getElementById("sidebar");
+  const modules = [...new Set(lessons.map(l => l.module))];
+  const f = filter.trim().toLowerCase();
+  let html = `<div class="side-title">Percurso Java</div>
+    <button class="nav-item ${state.current === "dashboard" ? "active" : ""}" onclick="showDashboard()">Visão geral <small>início</small></button>`;
+
+  for (const mod of modules) {
+    const items = lessons.filter(l => l.module === mod && matches(l, f));
+    if (!items.length) continue;
+    html += `<div class="side-title">${mod}</div>`;
+    for (const lesson of items) {
+      html += `<button class="nav-item ${state.current === lesson.id ? "active" : ""} ${state.done.includes(lesson.id) ? "done" : ""}" onclick="openLesson('${lesson.id}')">
+        <span>${lesson.title}</span><small>${lesson.minutes}m</small>
+      </button>`;
+    }
+  }
+
+  if (!lessons.some(l => matches(l, f))) {
+    html += `<div class="empty">Nada encontrado. Experimenta "String", "Map", "POO" ou "exceções".</div>`;
+  }
+  sidebar.innerHTML = html;
+}
+
+function matches(lesson, f) {
+  if (!f) return true;
+  const hay = [lesson.title, lesson.module, lesson.summary, lesson.level, JSON.stringify(lesson.body)].join(" ").toLowerCase();
+  return hay.includes(f);
+}
+
+function showDashboard() {
+  state.current = "dashboard";
+  save();
+  renderSidebar(document.getElementById("search").value);
+  const total = lessons.length;
+  const done = state.done.length;
+  const phases = [
+    ["1", "Base da linguagem", "Começa por sintaxe, tipos, condições, ciclos e métodos."],
+    ["2", "Dados e algoritmos", "Treina arrays, Strings, percursos, pesquisas e acumuladores."],
+    ["3", "POO a sério", "Consolida classes, objetos, encapsulamento, herança e interfaces."],
+    ["4", "Exame", "Resolve exercícios completos, revê erros e treina no papel."]
+  ].map(p => `<article class="phase-card">
+    <small>Fase ${p[0]}</small>
+    <strong>${p[1]}</strong>
+    <p>${p[2]}</p>
+  </article>`).join("");
+  const byModule = [...new Set(lessons.map(l => l.module))].map(module => {
+    const group = lessons.filter(l => l.module === module);
+    const completed = group.filter(l => state.done.includes(l.id)).length;
+    const pct = Math.round((completed / group.length) * 100);
+    return `<article class="module-card">
+      <strong>${module}</strong>
+      <span>${completed}/${group.length} lições concluídas</span>
+      <span>${group.map(l => l.title).join(", ")}</span>
+      <div class="meter"><i style="width:${pct}%"></i></div>
+    </article>`;
+  }).join("");
+
+  document.getElementById("main").innerHTML = `
+    <section class="hero">
+      <div class="kicker">Estudo prático de Java</div>
+      <h1>O essencial para aprender Java e chegar ao exame com confiança.</h1>
+      <p>Este site junta teoria direta, exemplos pequenos, armadilhas de exame, exercícios validados no browser, quizzes e uma checklist. A ideia é estudares quase tudo aqui e depois praticares em IDE.</p>
+      <div class="hero-actions">
+        <button class="btn primary" onclick="openLesson('${firstUnfinished().id}')">Continuar estudo</button>
+        <button class="btn" onclick="openLesson('exame')">Treino de exame</button>
+        <button class="btn" onclick="markAllExam()">Marcar tópicos de exame</button>
+      </div>
+    </section>
+    <section class="section">
+      <h2>Ordem ideal de estudo</h2>
+      <div class="phase-grid">${phases}</div>
+    </section>
+    <section class="section">
+      <h2>Roteiro recomendado</h2>
+      <div class="module-grid">${byModule}</div>
+    </section>
+    <section class="section">
+      <h2>Como usar este site</h2>
+      <div class="text-block">
+        <ol>
+          <li>Faz as lições pela ordem. Se já souberes um tópico, faz o quiz e o exercício.</li>
+          <li>Quando errares, escreve uma nota curta: regra, exemplo e erro que cometeste.</li>
+          <li>No fim, abre "Treino de exame" e resolve sem copiar.</li>
+          <li>Na IDE, cria um ficheiro pequeno por tópico e compila mesmo.</li>
+        </ol>
+        <p><strong>Progresso atual:</strong> ${done}/${total} lições concluídas.</p>
+      </div>
+    </section>`;
+}
+
+function firstUnfinished() {
+  return lessons.find(l => !state.done.includes(l.id)) || lessons[lessons.length - 1];
+}
+
+function openLesson(id) {
+  const lesson = lessons.find(l => l.id === id);
+  if (!lesson) return;
+  state.current = id;
+  save();
+  renderSidebar(document.getElementById("search").value);
+  document.getElementById("sidebar").classList.remove("open");
+  const index = lessons.findIndex(l => l.id === id);
+  const prev = lessons[index - 1];
+  const next = lessons[index + 1];
+
+  document.getElementById("main").innerHTML = `
+    <article class="lesson-card">
+      <div class="lesson-meta">
+        <span class="tag">${lesson.module}</span>
+        <span class="tag">${lesson.level}</span>
+        <span class="tag">${lesson.minutes} min</span>
+        ${lesson.exam ? `<span class="tag exam">sai muito em exame</span>` : `<span class="tag">extra útil</span>`}
+      </div>
+      <h1>${lesson.title}</h1>
+      <p style="color:var(--muted); margin-top:10px">${lesson.summary}</p>
+      ${renderLessonPlan(lesson)}
+      <div class="lesson-body" style="margin-top:22px">${renderLessonSections(lesson)}</div>
+      ${renderQuiz(lesson)}
+      <div class="lesson-nav">
+        <button class="btn" ${prev ? `onclick="openLesson('${prev.id}')"` : "disabled"}>Anterior</button>
+        <button class="btn good" onclick="completeLesson('${lesson.id}')">${state.done.includes(lesson.id) ? "Concluída" : "Marcar como concluída"}</button>
+        <button class="btn primary" ${next ? `onclick="openLesson('${next.id}')"` : `onclick="showDashboard()"`}>${next ? "Seguinte" : "Voltar ao início"}</button>
+      </div>
+    </article>`;
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+function renderLessonPlan(lesson) {
+  const items = [
+    "Lê a ideia principal",
+    "Estuda o exemplo",
+    "Decora as armadilhas",
+    "Resolve o exercício",
+    "Faz o quiz"
+  ];
+  return `<div class="lesson-intro">
+    <strong>Como estudar esta lição</strong>
+    <ul class="lesson-map">${items.map(item => `<li>${item}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function renderLessonSections(lesson) {
+  return lesson.body.map((block, index) => {
+    const meta = sectionMeta(block.type);
+    return `<section class="lesson-section">
+      <div class="lesson-section-head">
+        <span class="lesson-section-num">${index + 1}</span>
+        <div>
+          <div class="lesson-section-title">${meta.title}</div>
+          <div class="lesson-section-desc">${meta.desc}</div>
+        </div>
+      </div>
+      <div class="lesson-section-body">${renderBlock(block)}</div>
+    </section>`;
+  }).join("");
+}
+
+function sectionMeta(type) {
+  const labels = {
+    text: ["Teoria essencial", "Percebe a regra antes de decorar o código."],
+    callout: ["Atenção para exame", "Dica, armadilha ou regra que costuma fazer perder pontos."],
+    code: ["Exemplo em Java", "Lê linha a linha e tenta alterar valores."],
+    table: ["Resumo organizado", "Compara conceitos e guarda as diferenças principais."],
+    exercise: ["Prática guiada", "Escreve, verifica, corrige e depois tenta de novo sem ajuda."]
+  };
+  const found = labels[type] || ["Secção", "Estuda esta parte com calma."];
+  return { title: found[0], desc: found[1] };
+}
+
+function renderBlock(block) {
+  if (block.type === "text") return `<div class="text-block">${block.html}</div>`;
+  if (block.type === "callout") return `<div class="callout ${block.tone || ""}">${block.html}</div>`;
+  if (block.type === "table") {
+    return `<table class="compare"><tbody>${block.rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("")}</tbody></table>`;
+  }
+  if (block.type === "code") {
+    return `<div class="codebox">
+      <div class="code-head"><span>${block.title}</span><button onclick="copyCode(this)">copiar</button></div>
+      <pre>${escapeHtml(block.code)}</pre>
+    </div>`;
+  }
+  if (block.type === "exercise") {
+    return `<section class="exercise-card">
+      <h3>Exercício prático</h3>
+      <p>${block.prompt}</p>
+      <textarea id="${block.id}" spellcheck="false">${escapeHtml(block.starter)}</textarea>
+      <div class="exercise-actions">
+        <button class="btn good" onclick="checkExercise('${block.id}')">Verificar</button>
+        <button class="btn" onclick="showHint('${block.id}')">Dica</button>
+        <button class="btn" onclick="resetExercise('${block.id}')">Repor</button>
+      </div>
+      <div class="result" id="${block.id}-result"></div>
+    </section>`;
+  }
+  return "";
+}
+
+function renderQuiz(lesson) {
+  const q = lesson.quiz;
+  return `<section class="lesson-section" style="margin-top:14px">
+    <div class="lesson-section-head">
+      <span class="lesson-section-num">Q</span>
+      <div>
+        <div class="lesson-section-title">Quiz rápido</div>
+        <div class="lesson-section-desc">Confirma se percebeste antes de seguir.</div>
+      </div>
+    </div>
+    <div class="lesson-section-body">
+      <section class="quiz-card">
+        <h3>Pergunta de revisão</h3>
+        <p>${q.q}</p>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => `<button class="option" onclick="answerQuiz('${lesson.id}', ${i})">${opt}</button>`).join("")}
+        </div>
+        <div class="feedback" id="quiz-${lesson.id}"></div>
+      </section>
+    </div>
+  </section>`;
+}
+
+function findExercise(id) {
+  for (const lesson of lessons) {
+    const found = lesson.body.find(b => b.type === "exercise" && b.id === id);
+    if (found) return found;
+  }
+}
+
+function checkExercise(id) {
+  const ex = findExercise(id);
+  const code = document.getElementById(id).value;
+  const result = document.getElementById(id + "-result");
+  result.removeAttribute("style");
+  const missing = ex.checks.filter(c => !(new RegExp(c.re, "is").test(code)));
+  if (missing.length) {
+    result.className = "result show no";
+    result.innerHTML = `<strong>Ainda falta:</strong><ul>${missing.map(m => `<li>${m.msg}</li>`).join("")}</ul>`;
+  } else {
+    result.className = "result show ok";
+    result.innerHTML = "Boa. A solução cumpre os requisitos principais. Agora tenta compilar numa IDE e testar com mais casos.";
+  }
+}
+
+function showHint(id) {
+  const ex = findExercise(id);
+  const result = document.getElementById(id + "-result");
+  result.className = "result show hint";
+  result.removeAttribute("style");
+  result.textContent = ex.hint;
+}
+
+function resetExercise(id) {
+  const ex = findExercise(id);
+  document.getElementById(id).value = ex.starter;
+  const result = document.getElementById(id + "-result");
+  result.className = "result";
+  result.removeAttribute("style");
+  result.textContent = "";
+}
+
+function answerQuiz(lessonId, selected) {
+  const lesson = lessons.find(l => l.id === lessonId);
+  const buttons = document.querySelectorAll(".quiz-options .option");
+  buttons.forEach((btn, i) => {
+    btn.classList.remove("correct", "wrong");
+    if (i === lesson.quiz.answer) btn.classList.add("correct");
+    if (i === selected && selected !== lesson.quiz.answer) btn.classList.add("wrong");
+  });
+  const ok = selected === lesson.quiz.answer;
+  document.getElementById("quiz-" + lessonId).innerHTML = `<strong>${ok ? "Certo." : "Quase."}</strong> ${lesson.quiz.explain}`;
+}
+
+function completeLesson(id) {
+  if (!state.done.includes(id)) {
+    state.done.push(id);
+    save();
+  }
+  openLesson(id);
+}
+
+function copyCode(btn) {
+  const text = btn.closest(".codebox").querySelector("pre").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const old = btn.textContent;
+    btn.textContent = "copiado";
+    setTimeout(() => btn.textContent = old, 1100);
+  });
+}
+
+function renderChecklist() {
+  document.getElementById("examChecklist").innerHTML = checklist.map((item, i) => `
+    <li><input type="checkbox" ${state.checks[i] ? "checked" : ""} onchange="toggleCheck(${i}, this.checked)"><span>${item}</span></li>
+  `).join("");
+}
+
+function toggleCheck(i, checked) {
+  state.checks[i] = checked;
+  save();
+}
+
+function renderFlash() {
+  const card = flashcards[flashIndex % flashcards.length];
+  document.getElementById("flashcard").classList.remove("reveal");
+  document.getElementById("flashcard").innerHTML = `<strong>${card[0]}</strong><div class="flash-answer">${card[1]}</div>`;
+  localStorage.setItem("javadex-flash", flashIndex);
+}
+
+function revealFlash() {
+  document.getElementById("flashcard").classList.add("reveal");
+}
+
+function nextFlash() {
+  flashIndex = (flashIndex + 1) % flashcards.length;
+  renderFlash();
+}
+
+function updateProgress() {
+  const pct = Math.round((state.done.length / lessons.length) * 100);
+  document.getElementById("progressChip").textContent = `${pct}% concluído`;
+}
+
+function updateThemeButton() {
+  const isDark = document.documentElement.dataset.theme === "dark";
+  document.getElementById("themeBtn").textContent = isDark ? "Modo claro" : "Modo escuro";
+}
+
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem("javadex-theme", next);
+  updateThemeButton();
+}
+
+function resetProgress() {
+  if (!confirm("Queres mesmo limpar progresso, checklist e notas?")) return;
+  state = {done: [], checks: {}, current: "dashboard"};
+  localStorage.removeItem("javadex-notes");
+  document.getElementById("notes").value = "";
+  save();
+  renderChecklist();
+  showDashboard();
+}
+
+function markAllExam() {
+  lessons.filter(l => l.exam).forEach(l => {
+    if (!state.done.includes(l.id)) state.done.push(l.id);
+  });
+  save();
+  showDashboard();
+}
+
+document.getElementById("search").addEventListener("input", e => {
+  renderSidebar(e.target.value);
+});
+
+document.getElementById("menuBtn").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+document.getElementById("notes").value = localStorage.getItem("javadex-notes") || "";
+document.getElementById("notes").addEventListener("input", e => {
+  localStorage.setItem("javadex-notes", e.target.value);
+});
+
+renderChecklist();
+renderFlash();
+updateProgress();
+updateThemeButton();
+renderSidebar();
+if (state.current && state.current !== "dashboard" && lessons.some(l => l.id === state.current)) {
+  openLesson(state.current);
+} else {
+  showDashboard();
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
