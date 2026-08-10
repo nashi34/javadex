@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JavaDex - Guia de Estudo de Java</title>
+<title>JavaDex - Aprender Java</title>
 <style>
 :root {
   --bg: #f6f7f8;
@@ -651,7 +651,7 @@ const lessons = [
   {
     id: "plano",
     module: "Começar bem",
-    title: "Como estudar Java para passar",
+    title: "Como estudar Java",
     level: "base",
     minutes: 12,
     exam: true,
@@ -1324,7 +1324,7 @@ class CalculadoraTest {
     level: "avançado",
     minutes: 50,
     exam: true,
-    summary: "Como atacar exercícios típicos: classes, algoritmos, collections e perguntas teóricas.",
+    summary: "Exercícios típicos: classes, algoritmos, collections e perguntas teóricas.",
     body: [
       {type:"text", html:`
         <p>Em exame, não comeces logo a escrever tudo. Primeiro identifica entradas, saídas, estados e regras. Depois escreve a solução mais simples correta.</p>
@@ -1529,7 +1529,7 @@ function showDashboard() {
   document.getElementById("main").innerHTML = `
     <section class="hero">
       <div class="kicker">Estudo prático de Java</div>
-      <h1>O essencial para aprender Java e chegar ao exame com confiança.</h1>
+      <h1>O essencial para aprender Java</h1>
       <p>Este site junta teoria direta, exemplos pequenos, armadilhas de exame, exercícios validados no browser, quizzes e uma checklist. A ideia é estudares quase tudo aqui e depois praticares em IDE.</p>
       <div class="hero-actions">
         <button class="btn primary" onclick="openLesson('${firstUnfinished().id}')">Continuar estudo</button>
@@ -1845,11 +1845,3 @@ if (state.current && state.current !== "dashboard" && lessons.some(l => l.id ===
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
